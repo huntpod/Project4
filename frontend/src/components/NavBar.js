@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import './NavBar.css'; // Ensure you create this CSS file for styling
+import './NavBar.css';
 
 function NavBar() {
   return (
@@ -23,7 +23,7 @@ function NavBar() {
         </li>
         <li>
           <NavLink to="/reviews" activeClassName="active-link">
-            Reviews
+            Leave a Review
           </NavLink>
         </li>
       </ul>

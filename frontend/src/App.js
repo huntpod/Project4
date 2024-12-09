@@ -5,7 +5,7 @@ import AdminPage from './components/AdminPage';
 import ProfessorsPage from './components/ProfessorsPage';
 import ReviewsPage from './components/ReviewsPage';
 import NavBar from './components/NavBar';
-import './App.css'; // Ensure you create this CSS file for styling
+import './App.css';
 
 function App() {
   return (

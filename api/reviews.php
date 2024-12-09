@@ -40,16 +40,16 @@ function handleGet() {
 
 function handlePost($data) {
     global $conn, $tablename;
-    $stmt = $conn->prepare("INSERT INTO $tablename (course_id, review_text, flagged) VALUES (?, ?, ?)");
-    $stmt->bind_param("isi", $data['course_id'], $data['review_text'], $data['flagged']);
+    $stmt = $conn->prepare("INSERT INTO $tablename (course_id, review_text, flagged, ratings) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("isii", $data['course_id'], $data['review_text'], $data['flagged'], $data['ratings']);
     $stmt->execute();
     echo json_encode(["message" => "Review created", "id" => $conn->insert_id]);
 }
 
 function handlePut($data) {
     global $conn, $tablename;
-    $stmt = $conn->prepare("UPDATE $tablename SET course_id = ?, review_text = ?, flagged = ? WHERE review_id = ?");
-    $stmt->bind_param("isii", $data['course_id'], $data['review_text'], $data['flagged'], $data['review_id']);
+    $stmt = $conn->prepare("UPDATE $tablename SET course_id = ?, review_text = ?, flagged = ?, ratings = ? WHERE review_id = ?");
+    $stmt->bind_param("isiii", $data['course_id'], $data['review_text'], $data['flagged'], $data['ratings'], $data['review_id']);
     $stmt->execute();
     echo json_encode(["message" => "Review updated"]);
 }

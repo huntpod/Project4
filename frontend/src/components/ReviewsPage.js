@@ -1,50 +1,58 @@
-import React, { useState, useEffect } from 'react';
-import { fetchReviews } from '../services/api';
+import React, { useState } from 'react';
+import { createReview } from '../services/api';
 
 function ReviewsPage() {
-  const [reviews, setReviews] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filteredReviews, setFilteredReviews] = useState([]);
+  const [newReview, setNewReview] = useState({ course_id: '', review_text: '', flagged: 0, ratings: 0 });
 
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        const reviewsData = await fetchReviews();
-        setReviews(reviewsData);
-        setFilteredReviews(reviewsData);
-      } catch (error) {
-        console.error('Failed to fetch data', error);
-      }
-    };
+  const handleCreateReview = async () => {
+    try {
+      await createReview(newReview);
+      setNewReview({ course_id: '', review_text: '', flagged: 0, ratings: 0 });
+      alert("Review submitted successfully!");
+    } catch (error) {
+      console.error('Failed to create review', error);
+    }
+  };
 
-    loadData();
-  }, []);
-
-  const handleSearch = () => {
-    const term = searchTerm.toLowerCase();
-    setFilteredReviews(reviews.filter(review => 
-      review.review_text.toLowerCase().includes(term) ||
-      review.course_id.toLowerCase().includes(term)
-    ));
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewReview(prevState => ({ ...prevState, [name]: value }));
   };
 
   return (
     <div>
-      <h1>Reviews Page</h1>
+      <h1>Leave a Review</h1>
       <input
         type="text"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        placeholder="Search by Professor or Course"
+        name="course_id"
+        value={newReview.course_id}
+        onChange={handleInputChange}
+        placeholder="Course ID"
       />
-      <button onClick={handleSearch}>Search</button>
-      <ul>
-        {filteredReviews.map(review => (
-          <li key={review.review_id}>
-            {`Course ID: ${review.course_id}, Review: ${review.review_text}, Flagged: ${review.flagged}`}
-          </li>
-        ))}
-      </ul>
+      <input
+        type="text"
+        name="review_text"
+        value={newReview.review_text}
+        onChange={handleInputChange}
+        placeholder="Review Text"
+      />
+      <input
+        type="number"
+        name="ratings"
+        value={newReview.ratings}
+        onChange={handleInputChange}
+        placeholder="Ratings"
+        min="0"
+        max="5"
+      />
+      <input
+        type="checkbox"
+        name="flagged"
+        checked={!!newReview.flagged}
+        onChange={(e) => handleInputChange({ target: { name: 'flagged', value: e.target.checked ? 1 : 0 } })}
+      />
+      <label htmlFor="flagged">Flagged</label>
+      <button onClick={handleCreateReview}>Submit Review</button>
     </div>
   );
 }
