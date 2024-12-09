@@ -1,14 +1,28 @@
-import React, { useState } from 'react';
-import { createReview } from '../services/api';
+import React, { useState, useEffect } from 'react';
+import { createReview, fetchProfs } from '../services/api';
 
 function ReviewsPage() {
-  const [newReview, setNewReview] = useState({ course_id: '', review_text: '', flagged: 0, ratings: 0 });
+  const [newReview, setNewReview] = useState({ course_id: '', review_text: '', flagged: 0, ratings: 0, professor_id: '' });
+  const [profs, setProfs] = useState([]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        const profsData = await fetchProfs();
+        setProfs(profsData);
+      } catch (error) {
+        console.error('Failed to fetch professors', error);
+      }
+    };
+
+    loadData();
+  }, []);
 
   const handleCreateReview = async () => {
     try {
       await createReview(newReview);
-      setNewReview({ course_id: '', review_text: '', flagged: 0, ratings: 0 });
-      alert("Review submitted successfully!");
+      setNewReview({ course_id: '', review_text: '', flagged: 0, ratings: 0, professor_id: '' });
+      alert('Review submitted successfully!');
     } catch (error) {
       console.error('Failed to create review', error);
     }
@@ -39,7 +53,7 @@ function ReviewsPage() {
       <input
         type="number"
         name="ratings"
-        value={newReview.ratings}
+        value={newReview.Ratings}
         onChange={handleInputChange}
         placeholder="Ratings"
         min="0"
@@ -52,6 +66,18 @@ function ReviewsPage() {
         onChange={(e) => handleInputChange({ target: { name: 'flagged', value: e.target.checked ? 1 : 0 } })}
       />
       <label htmlFor="flagged">Flagged</label>
+      <select
+        name="professor_id"
+        value={newReview.professor_id}
+        onChange={handleInputChange}
+      >
+        <option value="">Select Professor</option>
+        {profs.map(prof => (
+          <option key={prof.professor_id} value={prof.professor_id}>
+            {prof.name}
+          </option>
+        ))}
+      </select>
       <button onClick={handleCreateReview}>Submit Review</button>
     </div>
   );

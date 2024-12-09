@@ -56,7 +56,7 @@ function HomePage() {
           const professorName = prof ? prof.name : 'Unknown';
           return (
             <li key={review.review_id}>
-              {`Course Code: ${courseCode}, Professor: ${professorName}, Review: ${review.review_text}, Flagged: ${review.flagged}, Ratings: ${review.ratings}`}
+              {`Course Code: ${courseCode}, Professor: ${professorName}, Review: ${review.review_text}, Flagged: ${review.flagged}, Ratings: ${review.Ratings}`}
             </li>
           );
         })}
