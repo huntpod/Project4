@@ -148,6 +148,7 @@ export const createReview = async (review) => {
   return await checkResponse(response);
 };
 
+
 export const updateReview = async (review) => {
   const response = await fetch(`${API_BASE}?resource=reviews`, {
     method: 'PUT',

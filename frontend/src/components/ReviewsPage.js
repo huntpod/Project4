@@ -46,13 +46,32 @@ function ReviewsPage() {
 
   const handleCreateReview = async () => {
     try {
-      await createReview(newReview);
-      setNewReview({ course_id: '', review_text: '', ratings: 0, professor_id: '' });
-      alert('Review submitted successfully!');
+      // Check all fields are filled
+      if (!newReview.professor_id || !newReview.course_id || !newReview.review_text || !newReview.ratings) {
+        alert('Please fill out all fields before submitting your review.');
+        return;
+      }
+  
+      // Send review to API
+      const response = await createReview({
+        professor_id: newReview.professor_id,
+        course_id: newReview.course_id,
+        review_text: newReview.review_text,
+        ratings: newReview.ratings,
+      });
+  
+      if (response) {
+        alert('Review submitted successfully!');
+        setNewReview({ course_id: '', review_text: '', ratings: 0, professor_id: '' });
+      } else {
+        alert('Failed to submit review. Please try again.');
+      }
     } catch (error) {
-      console.error('Failed to create review', error);
+      console.error('Error submitting review:', error);
+      alert('An error occurred while submitting the review. Please check your input and try again.');
     }
   };
+  
 
   return (
     <div>
