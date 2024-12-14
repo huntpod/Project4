@@ -3,22 +3,23 @@ require 'db.php';
 
 $tablename = "admincredentials";
 $input = json_decode(file_get_contents('php://input'), true);
+$request_method = $_SERVER['REQUEST_METHOD']; 
 
 switch ($request_method) {
     case 'GET':
-        error_log('GET request received for admins');
         handleGet();
         break;
     case 'POST':
-        error_log('POST request received for admins');
-        handlePost($input);
+        if (isset($_GET['resource']) && $_GET['resource'] === 'adminLogin') {
+            handleAdminLogin($input);
+        } else {
+            handlePost($input);
+        }
         break;
     case 'PUT':
-        error_log('PUT request received for admins');
         handlePut($input);
         break;
     case 'DELETE':
-        error_log('DELETE request received for admins');
         handleDelete($input);
         break;
     default:
@@ -43,16 +44,32 @@ function handleGet() {
 
 function handlePost($data) {
     global $conn, $tablename;
+    $hashedPassword = hash('sha256', $data['password']);
     $stmt = $conn->prepare("INSERT INTO $tablename (username, password) VALUES (?, ?)");
-    $stmt->bind_param("ss", $data['username'], $data['password']);
+    $stmt->bind_param("ss", $data['username'], $hashedPassword);
     $stmt->execute();
     echo json_encode(["message" => "Admin created", "id" => $conn->insert_id]);
 }
 
+function handleAdminLogin($data) {
+    global $conn, $tablename;
+    $hashedPassword = hash('sha256', $data['password']);
+    $stmt = $conn->prepare("SELECT * FROM $tablename WHERE username = ? AND password = ?");
+    $stmt->bind_param("ss", $data['username'], $hashedPassword);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result->num_rows > 0) {
+        echo json_encode(["message" => "Login successful", "success" => true]);
+    } else {
+        echo json_encode(["message" => "Invalid username or password", "success" => false]);
+    }
+}
+
 function handlePut($data) {
     global $conn, $tablename;
+    $hashedPassword = hash('sha256', $data['password']);
     $stmt = $conn->prepare("UPDATE $tablename SET username = ?, password = ? WHERE admin_id = ?");
-    $stmt->bind_param("ssi", $data['username'], $data['password'], $data['admin_id']);
+    $stmt->bind_param("ssi", $data['username'], $hashedPassword, $data['admin_id']);
     $stmt->execute();
     echo json_encode(["message" => "Admin updated"]);
 }

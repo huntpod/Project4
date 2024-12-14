@@ -60,8 +60,6 @@ function AdminPage() {
     }
   };
 
-  // Similar input change handlers and state management goes here...
-
   return (
     <div>
       <h1>Admin Page</h1>

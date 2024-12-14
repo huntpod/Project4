@@ -36,6 +36,12 @@ switch ($resource) {
     case 'reviews':
         include 'reviews.php';
         break;
+    case 'adminLogin':
+        include 'admins.php';
+        break;
+    case 'professorLogin':
+        include 'profs.php';
+        break;
     default:
         echo json_encode(["message" => "Resource not found"]);
         http_response_code(404); // Not Found

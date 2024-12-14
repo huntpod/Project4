@@ -9,6 +9,26 @@ const checkResponse = async (response) => {
   return await response.json();
 };
 
+// Admin Login
+export const loginAdmin = async (credentials) => {
+  const response = await fetch(`${API_BASE}?resource=adminLogin`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(credentials),
+  });
+  return await checkResponse(response);
+};
+
+// Professor Login
+export const loginProfessor = async (credentials) => {
+  const response = await fetch(`${API_BASE}?resource=professorLogin`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(credentials),
+  });
+  return await checkResponse(response);
+};
+
 // Admins
 export const fetchAdmins = async () => {
   const response = await fetch(`${API_BASE}?resource=admins`);
