@@ -15,7 +15,7 @@ function ProfessorLogin() {
     e.preventDefault();
     const response = await login(credentials, 'professor');
     if (response.success) {
-      navigate('/professor');
+      navigate('/professors');
     } else {
       console.error('Invalid email or password');
     }
