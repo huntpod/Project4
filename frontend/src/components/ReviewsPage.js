@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { createReview, fetchProfs } from '../services/api';
+import { createReview, fetchProfs, fetchCourses } from '../services/api';
 
 function ReviewsPage() {
-  const [newReview, setNewReview] = useState({ course_id: '', review_text: '', flagged: 0, ratings: 0, professor_id: '' });
+  const [newReview, setNewReview] = useState({ course_id: '', review_text: '', ratings: 0, professor_id: '' });
   const [profs, setProfs] = useState([]);
+  const [courses, setCourses] = useState([]);
+  const [filteredCourses, setFilteredCourses] = useState([]);
 
   useEffect(() => {
-    const loadData = async () => {
+    const loadProfs = async () => {
       try {
         const profsData = await fetchProfs();
         setProfs(profsData);
@@ -15,57 +17,65 @@ function ReviewsPage() {
       }
     };
 
-    loadData();
+    const loadCourses = async () => {
+      try {
+        const coursesData = await fetchCourses();
+        setCourses(coursesData);
+      } catch (error) {
+        console.error('Failed to fetch courses', error);
+      }
+    };
+
+    loadProfs();
+    loadCourses();
   }, []);
 
-  const handleCreateReview = async () => {
-    try {
-      await createReview(newReview);
-      setNewReview({ course_id: '', review_text: '', flagged: 0, ratings: 0, professor_id: '' });
-      alert('Review submitted successfully!');
-    } catch (error) {
-      console.error('Failed to create review', error);
-    }
-  };
+  useEffect(() => {
+    const filtered = courses.filter(course => course.professor_id === newReview.professor_id);
+    setFilteredCourses(filtered);
+  }, [newReview.professor_id, courses]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewReview(prevState => ({ ...prevState, [name]: value }));
   };
 
+  const handleRatingChange = (rating) => {
+    setNewReview(prevState => ({ ...prevState, ratings: rating }));
+  };
+
+  const handleCreateReview = async () => {
+    try {
+      // Check all fields are filled
+      if (!newReview.professor_id || !newReview.course_id || !newReview.review_text || !newReview.ratings) {
+        alert('Please fill out all fields before submitting your review.');
+        return;
+      }
+  
+      // Send review to API
+      const response = await createReview({
+        professor_id: newReview.professor_id,
+        course_id: newReview.course_id,
+        review_text: newReview.review_text,
+        ratings: newReview.ratings,
+      });
+  
+      if (response) {
+        alert('Review submitted successfully!');
+        setNewReview({ course_id: '', review_text: '', ratings: 0, professor_id: '' });
+      } else {
+        alert('Failed to submit review. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      alert('An error occurred while submitting the review. Please check your input and try again.');
+    }
+  };
+  
+
   return (
     <div>
       <h1>Leave a Review</h1>
-      <input
-        type="text"
-        name="course_id"
-        value={newReview.course_id}
-        onChange={handleInputChange}
-        placeholder="Course ID"
-      />
-      <input
-        type="text"
-        name="review_text"
-        value={newReview.review_text}
-        onChange={handleInputChange}
-        placeholder="Review Text"
-      />
-      <input
-        type="number"
-        name="ratings"
-        value={newReview.Ratings}
-        onChange={handleInputChange}
-        placeholder="Ratings"
-        min="0"
-        max="5"
-      />
-      <input
-        type="checkbox"
-        name="flagged"
-        checked={!!newReview.flagged}
-        onChange={(e) => handleInputChange({ target: { name: 'flagged', value: e.target.checked ? 1 : 0 } })}
-      />
-      <label htmlFor="flagged">Flagged</label>
       <select
         name="professor_id"
         value={newReview.professor_id}
@@ -78,6 +88,47 @@ function ReviewsPage() {
           </option>
         ))}
       </select>
+
+      <select
+        name="course_id"
+        value={newReview.course_id}
+        onChange={handleInputChange}
+        disabled={!newReview.professor_id}
+      >
+        <option value="">Select Course</option>
+        {filteredCourses.map(course => (
+          <option key={course.course_id} value={course.course_id}>
+            {course.course_name}
+          </option>
+        ))}
+      </select>
+
+      <textarea
+        name="review_text"
+        value={newReview.review_text}
+        onChange={handleInputChange}
+        placeholder="Write your review here..."
+        rows="5"
+        style={{ width: '100%' }}
+      />
+
+      <div>
+        <p>Rating:</p>
+        {[1, 2, 3, 4, 5].map(star => (
+          <span
+            key={star}
+            onClick={() => handleRatingChange(star)}
+            style={{
+              cursor: 'pointer',
+              fontSize: '1.5em',
+              color: newReview.ratings >= star ? '#FFD700' : '#CCCCCC',
+            }}
+          >
+            ★
+          </span>
+        ))}
+      </div>
+
       <button onClick={handleCreateReview}>Submit Review</button>
     </div>
   );
