@@ -1,0 +1,110 @@
+/* Reviews Container */
+.reviews-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f9f9f9; /* Slightly off-white */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Header Styling */
+  .reviews-header {
+    text-align: center;
+    color: #00274d; /* UofM blue */
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+  }
+  
+  /* Dropdowns Container */
+  .dropdown-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Spacing between dropdowns */
+    margin-bottom: 20px; /* Space below dropdowns */
+  }
+  
+  /* Dropdown Styling */
+  select {
+    width: 100%;
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #ffffff;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  select:focus {
+    border: 2px solid #00274d; /* UofM blue */
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 39, 77, 0.2);
+  }
+  
+  select:disabled {
+    background-color: #f8f9fa;
+    color: #999;
+  }
+  
+  /* Textarea Styling */
+  textarea {
+    width: 95%;
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    resize: none;
+    margin-bottom: 20px;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  textarea:focus {
+    border: 2px solid #00274d; /* UofM blue */
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 39, 77, 0.2);
+  }
+  
+  /* Rating Section */
+  .rating-container {
+    margin-bottom: 20px;
+  }
+  
+  .rating-container p {
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  
+  .rating-container span {
+    cursor: pointer;
+    font-size: 1.8rem;
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+  
+  .rating-container span:hover {
+    transform: scale(1.1);
+  }
+  
+  /* Button Styling */
+  .review-buttons {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    color: #ffffff;
+    background-color: #00274d; /* UofM blue */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+  }
+  
+  .review-buttons:hover {
+    background-color: #0056b3; /* Lighter blue */
+    transform: scale(1.05);
+  }
+  
+  .review-buttons:active {
+    transform: scale(0.98);
+  }
+  
