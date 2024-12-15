@@ -1,0 +1,140 @@
+/* General Styling */
+body {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #333;
+    min-height: 100vh;
+  }
+  
+  /* Container Styling */
+  .container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f9f9f9; /* Slightly off-white */
+    border-radius: 10px;
+    position: relative; /* For pseudo-element outline */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Reverse gradient outline */
+  .container:before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border-radius: 14px; /* Match container rounding */
+    z-index: -1;
+    background: linear-gradient(135deg, #ffcb05 40%, #00274d 100%); /* Reverse gradient */
+  }
+  
+  /* Header Styling */
+  h1 {
+    text-align: center;
+    color: #e8e8e8; /* UofM blue */
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+  }
+  
+  /* Section Titles */
+  h2 {
+    color: #003865; /* Slightly lighter blue */
+    font-size: 1.8rem;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #e8e8e8;
+    padding-bottom: 5px;
+  }
+  
+  /* Section Containers */
+  .section-container {
+    margin-bottom: 30px;
+    padding: 20px;
+    background-color: #ffffff; /* White for clean contrast */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Input Fields */
+  input {
+    width: calc(100% - 24px);
+    max-width: 400px;
+    margin: 10px 0 20px; /* Adds spacing between inputs and buttons */
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    transition: border 0.2s ease;
+  }
+  
+  input:focus {
+    border: 2px solid #00274d; /* UofM blue for focus */
+    outline: none;
+  }
+  
+  /* Buttons */
+  button {
+    padding: 10px 15px;
+    margin: 10px 0 20px; /* Adds spacing between buttons and subsequent content */
+    font-size: 1rem;
+    color: #ffffff;
+    background-color: #00274d; /* UofM blue */
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+  }
+  
+  button:hover {
+    background-color: #0056b3; /* Lighter blue on hover */
+    transform: scale(1.05); /* Slight pop effect */
+  }
+  
+  button:active {
+    transform: scale(0.98); /* Pressed effect */
+  }
+  
+  /* List Styling */
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+  }
+  
+  ul li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f8f9fa; /* Light gray background */
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  ul li:hover {
+    background-color: #e9ecef; /* Slightly darker gray on hover */
+  }
+  
+  /* Delete Button in List Items */
+  ul li button {
+    padding: 5px 10px;
+    font-size: 0.9rem;
+    background-color: #d9534f; /* Red for delete */
+    color: #ffffff;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  ul li button:hover {
+    background-color: #c9302c; /* Darker red on hover */
+  }
+  

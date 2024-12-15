@@ -1,0 +1,227 @@
+/* General styling */
+body {
+    font-family: 'Inter', sans-serif; /* Clean and modern font */
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    background: linear-gradient(135deg, #00274d 40%, #ffcb05 100%); /* UofM blue to maize gradient */
+    color: #333; /* Neutral text color */
+    min-height: 100vh;
+  }
+  
+  /* Reverse gradient outline for the homepage container */
+  .homepage {
+    max-width: 1100px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #f9f9f9; /* Slightly off-white background */
+    border-radius: 10px;
+    position: relative; /* Needed for pseudo-element */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  }
+  
+  .homepage:before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border-radius: 14px; /* Match container rounding + space for outline */
+    z-index: -1; /* Position behind the container */
+    background: linear-gradient(135deg, #ffcb05 40%, #00274d 100%); /* Reverse of body gradient */
+  }
+  
+  /* Title styling */
+  .homepage-title {
+    text-align: center;
+    color: #00274d; /* UofM blue for the title */
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 30px;
+  }
+  
+  /* Filter container */
+  .search-filter-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+  }
+  
+  .filter-dropdown {
+    width: 60%;
+    padding: 12px;
+    font-size: 1rem;
+    border: 2px solid #00274d;
+    border-radius: 8px;
+    background-color: #fffbf1; /* Soft maize-inspired yellow */
+    color: #00274d;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .filter-dropdown:hover {
+    background-color: #e8f0fe;
+    border-color: #ffcb05; /* Maize on hover */
+  }
+  
+  /* Search input styling */
+  .search-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .search-input {
+    width: 60%;
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    transition: border 0.2s ease;
+  }
+  
+  .search-input:focus {
+    border: 2px solid #00274d; /* UofM blue for focus */
+    outline: none;
+  }
+  
+  .dropdown-list {
+    width: 60%;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-top: 5px;
+    list-style: none;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .dropdown-item {
+    padding: 12px 15px;
+    font-size: 1rem;
+    cursor: pointer;
+    color: #333;
+    transition: all 0.2s ease;
+  }
+  
+  .dropdown-item:hover {
+    background-color: #f1f5f9;
+  }
+  
+  .active-item {
+    background-color: #00274d;
+    color: #ffffff;
+  }
+  
+  /* Professor reviews */
+  .professor-reviews {
+    margin-top: 25px;
+    padding: 15px;
+    background-color: #f7f9fc; /* Slightly tinted light blue for sections */
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .professor-reviews h2 {
+    color: #00274d;
+    font-size: 1.6rem;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  
+  .professor-reviews ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .professor-reviews li {
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    font-size: 1rem;
+    line-height: 1.6;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .professor-reviews li:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Back button */
+  .back-button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #ffffff;
+    background-color: #00274d;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .back-button:hover {
+    background-color: #004080;
+  }
+    
+  /* Class and department sections */
+  .class-professors,
+  .department-professors,
+  .professor-courses {
+    margin-top: 25px;
+  }
+  
+  .class-professors h2,
+  .department-professors h2,
+  .professor-courses h2 {
+    color: #00274d;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+  
+  .class-professors ul,
+  .department-professors ul,
+  .professor-courses ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .class-professors li,
+  .department-professors li,
+  .professor-courses li {
+    padding: 12px 15px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    border-radius: 8px;
+  }
+  
+  .class-professors li:hover,
+  .department-professors li:hover,
+  .professor-courses li:hover {
+    background-color: #f1f5f9;
+    color: #0a4d8c;
+  }
+  
+  /* Filter dropdown for courses */
+  .class-filter-dropdown {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    border: 1px solid #cccccc;
+    border-radius: 8px;
+    margin-top: 10px;
+    transition: border 0.2s ease;
+  }
+  
+  .class-filter-dropdown:focus {
+    border: 2px solid #00274d;
+    outline: none;
+  }
+  
