@@ -46,8 +46,8 @@ function handleGet() {
 function handlePost($data) {
     global $conn, $tablename;
     $hashedPassword = hash('sha256', $data['password']); // Hash the password with SHA-256
-    $stmt = $conn->prepare("INSERT INTO $tablename (name, email, password) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $data['name'], $data['email'], $hashedPassword);
+    $stmt = $conn->prepare("INSERT INTO $tablename (name, email, password, department_id) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("sssi", $data['name'], $data['email'], $hashedPassword, $data['department_id']);
     $stmt->execute();
     echo json_encode(["message" => "Professor created", "id" => $conn->insert_id]);
 }

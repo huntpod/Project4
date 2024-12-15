@@ -1,33 +1,51 @@
-import React, { useState, useEffect } from 'react';
-import { fetchDepartments, createDepartment, updateDepartment, deleteDepartment, fetchProfs, createProf, updateProf, deleteProf } from '../services/api';
+import React, { useState, useEffect, useContext } from 'react';
+import {
+  fetchDepartments,
+  createDepartment,
+  updateDepartment,
+  deleteDepartment,
+  fetchProfs,
+  createProf,
+  updateProf,
+  deleteProf
+} from '../services/api';
+import { AuthContext } from '../context/AuthContext'; // Import AuthContext
 import './Admin.css';
 
 function AdminPage() {
+  const { isAuthenticated, userRole, userId } = useContext(AuthContext); // Get context values
   const [departments, setDepartments] = useState([]);
   const [profs, setProfs] = useState([]);
   const [newDepartment, setNewDepartment] = useState({ department_name: '' });
-  const [newProf, setNewProf] = useState({ name: '', email: '', password: '' });
+  const [newProf, setNewProf] = useState({ name: '', email: '', password: '', department_id: '' });
 
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        const departmentsData = await fetchDepartments();
-        setDepartments(departmentsData);
-        const profsData = await fetchProfs();
-        setProfs(profsData);
-      } catch (error) {
-        console.error('Failed to fetch data', error);
-      }
-    };
+    if (isAuthenticated && userRole === 'admin') { // Ensure data loads only if authenticated
+      const loadData = async () => {
+        try {
+          const departmentsData = await fetchDepartments();
+          setDepartments(departmentsData);
+          const profsData = await fetchProfs();
+          setProfs(profsData);
+        } catch (error) {
+          console.error('Failed to fetch data', error);
+        }
+      };
 
-    loadData();
-  }, []);
+      loadData();
+    }
+  }, [isAuthenticated, userRole]);
 
   const handleCreateDepartment = async () => {
     try {
+      console.log('Sending department data:', newDepartment); // Log the data being sent
       const createdDepartment = await createDepartment(newDepartment);
-      setDepartments([...departments, createdDepartment]);
+      console.log('Created department:', createdDepartment); // Log the created department
       setNewDepartment({ department_name: '' });
+
+      // Fetch the updated list of departments to ensure it updates immediately
+      const updatedDepartments = await fetchDepartments();
+      setDepartments(updatedDepartments);
     } catch (error) {
       console.error('Failed to create department', error);
     }
@@ -35,9 +53,15 @@ function AdminPage() {
 
   const handleCreateProf = async () => {
     try {
+      console.log('Sending professor data:', newProf); // Log the data being sent
       const createdProf = await createProf(newProf);
-      setProfs([...profs, createdProf]);
-      setNewProf({ name: '', email: '', password: '' });
+      console.log('Created professor:', createdProf); // Log the created professor
+      setNewProf({ name: '', email: '', password: '', department_id: '' });
+
+      // Fetch the updated list of professors to ensure it updates immediately
+      const updatedProfs = await fetchProfs();
+      console.log('Updated professors:', updatedProfs); // Log the updated list of professors
+      setProfs(updatedProfs);
     } catch (error) {
       console.error('Failed to create professor', error);
     }
@@ -64,6 +88,7 @@ function AdminPage() {
   return (
     <div className="container">
       <h1 className="admin-header">Admin Page</h1>
+      
       {/* Manage Departments Section */}
       <div className="section-container">
         <h2>Manage Departments</h2>
@@ -100,7 +125,7 @@ function AdminPage() {
           name="email"
           value={newProf.email}
           onChange={(e) => setNewProf({ ...newProf, email: e.target.value })}
-          placeholder="Email"
+          placeholder="Email"  // Fixed the syntax here
         />
         <input
           type="password"
@@ -109,6 +134,18 @@ function AdminPage() {
           onChange={(e) => setNewProf({ ...newProf, password: e.target.value })}
           placeholder="Password"
         />
+        <select
+          name="department_id"
+          value={newProf.department_id}
+          onChange={(e) => setNewProf({ ...newProf, department_id: e.target.value })}
+        >
+          <option value="">Select Department</option>
+          {departments.map(dep => (
+            <option key={dep.department_id} value={dep.department_id}>
+              {dep.department_name}
+            </option>
+          ))}
+        </select>
         <button onClick={handleCreateProf}>Create Professor</button>
         <ul>
           {profs.map(prof => (

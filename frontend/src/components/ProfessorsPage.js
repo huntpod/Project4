@@ -25,8 +25,13 @@ function ProfessorsPage() {
   const handleCreateCourse = async () => {
     try {
       const createdCourse = await createCourse({ ...newCourse, professor_id: userId });
-      setCourses([...courses, createdCourse]);
+      console.log('Created course:', createdCourse); // Log the created course
       setNewCourse({ course_name: '', course_code: '' }); // Resetting fields
+
+      // Fetch the updated list of courses
+      const updatedCourses = await fetchCourses();
+      console.log('Updated courses:', updatedCourses); // Log the updated list of courses
+      setCourses(updatedCourses);
     } catch (error) {
       console.error('Failed to create course', error);
     }
