@@ -62,8 +62,8 @@ function AdminPage() {
   };
 
   return (
-    <div className="admin-page">
-      <h1>Admin Page</h1>
+    <div className="container">
+      <h1 className="admin-header">Admin Page</h1>
       {/* Manage Departments Section */}
       <div className="section-container">
         <h2>Manage Departments</h2>

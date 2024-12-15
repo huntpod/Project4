@@ -7,14 +7,18 @@ export const AuthContext = createContext();
 const AuthContextProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [userRole, setUserRole] = useState(null);
+  const [userId, setUserId] = useState(null); // Add userId state
   const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
     const role = localStorage.getItem('role');
+    const id = localStorage.getItem('userId'); // Ensure userId is retrieved from localStorage
+
     if (token) {
       setIsAuthenticated(true);
       setUserRole(role);
+      setUserId(id); // Set userId state
     }
   }, []);
 
@@ -30,8 +34,10 @@ const AuthContextProvider = ({ children }) => {
       if (response.success) {
         localStorage.setItem('token', 'dummy-token'); // Use actual token in production
         localStorage.setItem('role', role);
+        localStorage.setItem('userId', response.userId); // Store userId in localStorage
         setIsAuthenticated(true);
         setUserRole(role);
+        setUserId(response.userId); // Set userId state
         return { success: true };
       }
       return { success: false };
@@ -44,13 +50,15 @@ const AuthContextProvider = ({ children }) => {
   const logout = () => {
     setIsAuthenticated(false);
     setUserRole(null);
+    setUserId(null); // Reset userId state
     localStorage.removeItem('token');
     localStorage.removeItem('role');
+    localStorage.removeItem('userId'); // Remove userId from localStorage
     navigate('/');
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, userRole, login, logout }}>
+    <AuthContext.Provider value={{ isAuthenticated, userRole, userId, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

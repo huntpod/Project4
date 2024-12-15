@@ -54,12 +54,13 @@ function handlePost($data) {
 function handleAdminLogin($data) {
     global $conn, $tablename;
     $hashedPassword = hash('sha256', $data['password']);
-    $stmt = $conn->prepare("SELECT * FROM $tablename WHERE username = ? AND password = ?");
+    $stmt = $conn->prepare("SELECT admin_id FROM $tablename WHERE username = ? AND password = ?");
     $stmt->bind_param("ss", $data['username'], $hashedPassword);
     $stmt->execute();
     $result = $stmt->get_result();
     if ($result->num_rows > 0) {
-        echo json_encode(["message" => "Login successful", "success" => true]);
+        $admin = $result->fetch_assoc();
+        echo json_encode(["message" => "Login successful", "success" => true, "userId" => $admin['admin_id']]);
     } else {
         echo json_encode(["message" => "Invalid username or password", "success" => false]);
     }

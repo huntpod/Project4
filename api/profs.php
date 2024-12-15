@@ -72,12 +72,13 @@ function handleDelete($data) {
 function handleProfessorLogin($data) {
     global $conn, $tablename;
     $hashedPassword = hash('sha256', $data['password']);
-    $stmt = $conn->prepare("SELECT * FROM $tablename WHERE email = ? AND password = ?");
+    $stmt = $conn->prepare("SELECT professor_id FROM $tablename WHERE email = ? AND password = ?");
     $stmt->bind_param("ss", $data['email'], $hashedPassword);
     $stmt->execute();
     $result = $stmt->get_result();
     if ($result->num_rows > 0) {
-        echo json_encode(["message" => "Login successful", "success" => true]);
+        $professor = $result->fetch_assoc();
+        echo json_encode(["message" => "Login successful", "success" => true, "userId" => $professor['professor_id']]);
     } else {
         echo json_encode(["message" => "Invalid email or password", "success" => false]);
     }

@@ -6,7 +6,20 @@
     padding: 20px;
     background-color: #f9f9f9; /* Slightly off-white */
     border-radius: 10px;
+    position: relative; /* For pseudo-element outline */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .reviews-container:before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border-radius: 14px; /* Match container rounding */
+    z-index: -1;
+    background: linear-gradient(135deg, #ffcb05 40%, #00274d 100%); /* Reverse gradient */
   }
   
   /* Header Styling */

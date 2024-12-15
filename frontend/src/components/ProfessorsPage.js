@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import { fetchCourses, createCourse, updateCourse, deleteCourse } from '../services/api';
+import React, { useState, useEffect, useContext } from 'react';
+import { fetchCourses, createCourse, deleteCourse } from '../services/api';
+import { AuthContext } from '../context/AuthContext';
 import './ProfessorPage.css';
 
 function ProfessorsPage() {
+  const { userId } = useContext(AuthContext); // Use userId from context
   const [courses, setCourses] = useState([]);
   const [newCourse, setNewCourse] = useState({ course_name: '', course_code: '' });
 
   useEffect(() => {
     const loadData = async () => {
+      if (!userId) return; // Ensure userId is available
       try {
         const coursesData = await fetchCourses();
         setCourses(coursesData);
@@ -17,13 +20,13 @@ function ProfessorsPage() {
     };
 
     loadData();
-  }, []);
+  }, [userId]); // Re-fetch courses if userId changes
 
   const handleCreateCourse = async () => {
     try {
-      const createdCourse = await createCourse(newCourse);
+      const createdCourse = await createCourse({ ...newCourse, professor_id: userId });
       setCourses([...courses, createdCourse]);
-      setNewCourse({ course_name: '', course_code: '' });
+      setNewCourse({ course_name: '', course_code: '' }); // Resetting fields
     } catch (error) {
       console.error('Failed to create course', error);
     }
@@ -60,7 +63,7 @@ function ProfessorsPage() {
         />
         <button onClick={handleCreateCourse}>Create Course</button>
         <ul>
-          {courses.map((course) => (
+          {courses.filter(course => course.professor_id == userId).map((course) => (
             <li key={course.course_id}>
               {course.course_name} ({course.course_code})
               <button onClick={() => handleDeleteCourse(course.course_id)}>Delete</button>
